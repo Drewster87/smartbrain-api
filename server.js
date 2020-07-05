@@ -1,7 +1,9 @@
 const express = require('express');
 const app = express();
 const port = 3000;
+var cors = require('cors');
 
+app.use(cors())
 app.use(express.json());
 
 const database = {
@@ -48,14 +50,14 @@ app.post('/register', (req, res) => {
         entries: 0,
         joined: new Date()
     })
-    res.json(database.users[database.users.length-1])
+    res.json(database.users[database.users.length - 1])
 })
 
 app.get('/profile/:id', (req, res) => {
     const { id } = req.params;
     let found = false;
     database.users.forEach(user => {
-        if (user.id === id){
+        if (user.id === id) {
             found = true;
             return res.json(user);
         }
