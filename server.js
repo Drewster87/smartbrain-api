@@ -32,9 +32,17 @@ app.get('/', (req, res) => {
 })
 
 app.post('/signin', (req, res) => {
-    if (req.body.email === database.users[1].email &&
-        req.body.password === database.users[1].password) {
-        res.json('success')
+    const { email, password } = req.body;
+    let success = false;
+    let response = {};
+    database.users.forEach(user => {
+        if(user.email === email && user.password === password){
+            response = user;
+            success = true;
+        }
+    })
+    if (success) {
+        res.json(response);
     } else {
         res.status(400).json('error logging in')
     }
@@ -50,7 +58,7 @@ app.post('/register', (req, res) => {
         entries: 0,
         joined: new Date()
     })
-    res.json(database.users[database.users.length - 1])
+    res.json(database.users[database.users.length - 1]);
 })
 
 app.get('/profile/:id', (req, res) => {
